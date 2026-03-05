@@ -1,8 +1,8 @@
 // src/index.js
+import * as artifact from '@actions/artifact';
 import * as core from '@actions/core';
 import { exec } from '@actions/exec';
 import * as github from '@actions/github';
-import * as artifact from '@actions/artifact';
 
 async function run() {
   try {
@@ -26,7 +26,10 @@ async function run() {
     if (artifactName) {
       core.info(`downloading artifact '${artifactName}'`);
       const client = artifact.create();
-      const downloadResponse = await client.downloadArtifact(artifactName, './', {createArtifactDirectory: false});
+      // by default the client will create a directory named after the
+      // artifact. our build job names the artifact `dist`, so the contents
+      // will end up in ./dist which matches the later copy step.
+      const downloadResponse = await client.downloadArtifact(artifactName, './');
       core.info(`artifact downloaded to ${downloadResponse.downloadPath || '<unknown>'}`);
     }
 

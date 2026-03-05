@@ -11,8 +11,10 @@ GitHub Action that deploys a build directory to a GitHub Pages repository.
   Defaults to `deploy`.
 
 - `artifact` *(optional)* – name of an artifact produced by an earlier job.
-  If supplied the action will download the artifact to the workspace before
-  copying its contents; useful when build and deploy run in separate jobs.
+  The action will download the artifact into a folder with the same name
+  (e.g. `dist`), so that the directory structure expected by the deploy step
+  is preserved.
+  Useful when build and deploy run in separate jobs.
 
 ## Example usage
 
