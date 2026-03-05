@@ -31,7 +31,7 @@ GitHub Action that deploys a build directory to a GitHub Pages repository.
   with:
     # repo: another-account/pages-repo  # optional
     # branch: production                # optional
-    # token: ${{ secrets.PAGES_DEPLOY_TOKEN }}
+    token: ${{ secrets.DEPLOY_TOKEN }} # define secrets.DEPLOY_TOKEN and put it a PAT in it
 ```
 
 No build step is included; the action assumes a `dist/` directory already exists in the workspace (e.g. produced by your earlier steps).
@@ -55,8 +55,10 @@ permissions:
   contents: write
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
+    outputs:
+      artifact_id: ${{ steps.upload.outputs.artifact-id }}
 
     steps:
       - name: Checkout source repository
@@ -85,10 +87,27 @@ jobs:
       - name: Build project
         run: pnpm run build
 
+      - name: Upload build output
+        id: upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Checkout source repository
+        uses: actions/checkout@v3
+
       - name: Deploy to GitHub Pages
         uses: fox3000foxy/deploy-from-private-to-github-pages@v1
         with:
-          token: ${{ secrets.PAGES_DEPLOY_TOKEN }}
-        # the action assumes a `dist` directory is present
-        # it will auto-detect the target pages repo and use a deploy branch by default
+          artifact: ${{ needs.build.outputs.artifact_id }}
+          token: ${{ secrets.DEPLOY_TOKEN }}
+        # the action will auto-detect the target pages repo and use a deploy branch by default
+
 ```
