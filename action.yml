@@ -6,8 +6,16 @@ description: |
   `deploy` branch by default.
 author: Fox3000Foxy <fox3000foxy@gmail.com>
 
-inputs: {}          # no inputs
+inputs:
+  repo:
+    description: 'Target repository for Pages deployment'
+    required: false
+    default: ''
+  branch:
+    description: 'Target branch for deployment on the pages repo'
+    required: false
+    default: 'deploy'
 
 runs:
-  using: 'node16'   # or 'docker' / 'composite' depending on your preference
-  main: 'src/index.js'  # compiled JS or script path
+  using: 'node16'
+  main: 'dist/index.js'  # bundle produced by `npm run build`

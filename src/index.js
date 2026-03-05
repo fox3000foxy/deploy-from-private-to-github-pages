@@ -5,17 +5,20 @@ import * as github from '@actions/github';
 
 async function run() {
   try {
-    // derive repo/page target
-    const repo = process.env.GITHUB_REPOSITORY; // owner/name
-    const [owner, name] = repo.split('/');
-    let target = `${owner}/${owner}.github.io`;
-    if (!name.endsWith('.github.io')) {
-      // not already a pages repo – use the convention
-    } else {
-      target = repo;
+    // compute target repository (input overrides auto-detection)
+    let target = core.getInput('repo');
+    if (!target) {
+      const repo = process.env.GITHUB_REPOSITORY; // owner/name
+      const [owner, name] = repo.split('/');
+      if (name.endsWith('.github.io')) {
+        target = repo;
+      } else {
+        target = `${owner}/${owner}.github.io`;
+      }
     }
 
-    const branch = 'deploy';
+    // branch, default provided by action metadata
+    const branch = core.getInput('branch') || 'deploy';
 
     // clone or initialize
     await exec('git', ['clone', `https://x-access-token:${process.env.GITHUB_TOKEN}@github.com/${target}.git`, 'deploy'], {ignoreReturnCode: true});
