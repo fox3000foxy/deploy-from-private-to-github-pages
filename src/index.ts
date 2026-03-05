@@ -25,11 +25,13 @@ async function run() {
       if (isNaN(artifactId)) {
         throw new Error(`artifact input '${artifactInput}' is not a valid numeric ID`);
       }
-      core.info(`downloading artifact id ${artifactId}`);
+
+      // crée dist puis dézippe l'artefact dedans
+      await exec('mkdir', ['-p', 'dist']);
+
+      core.info(`downloading artifact id ${artifactId} into ./dist`);
       const client = new DefaultArtifactClient();
-      // the artifact client will create a folder named after the artifact;
-      // our build job names it "dist" so the contents land in ./dist
-      const downloadResponse = await client.downloadArtifact(artifactId, { path: './' });
+      const downloadResponse = await client.downloadArtifact(artifactId, { path: './dist' });
       core.info(`artifact downloaded to ${downloadResponse.downloadPath || '<unknown>'}`);
     }
 
@@ -38,7 +40,7 @@ async function run() {
     await exec('git', ['-C', 'deploy', 'checkout', '-B', branch]);
 
     // copy files from workspace
-    await exec('cp', ['-R', 'dist/*', 'deploy/']);
+    await exec('cp', ['-R', 'dist/.', 'deploy/']);
 
     await exec('git', ['-C', 'deploy', 'add', '-A']);
     await exec('git', ['-C', 'deploy', 'commit', '-m', `Deploy from ${repo}@${github.context.sha}`], { ignoreReturnCode: true });
