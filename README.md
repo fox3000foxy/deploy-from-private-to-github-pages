@@ -16,6 +16,14 @@ GitHub Action that deploys a build directory to a GitHub Pages repository.
   its name (e.g. `dist`), so the deploy step works consistently. Useful when
   build and deploy run in separate jobs.
 
+- `token` *(optional but recommended for cross-repo deploys)* – token used to
+  clone and push the target repository. If omitted, the action falls back to
+  `GITHUB_TOKEN` from the workflow environment.
+
+  Important: the default `GITHUB_TOKEN` usually cannot push to a different
+  repository. For `owner/repo -> owner/owner.github.io` deployments, use a PAT
+  or GitHub App token that has `contents: write` on the target repository.
+
 ## Example usage
 
 ```yaml
@@ -23,6 +31,7 @@ GitHub Action that deploys a build directory to a GitHub Pages repository.
   with:
     # repo: another-account/pages-repo  # optional
     # branch: production                # optional
+    # token: ${{ secrets.PAGES_DEPLOY_TOKEN }}
 ```
 
 No build step is included; the action assumes a `dist/` directory already exists in the workspace (e.g. produced by your earlier steps).
@@ -78,6 +87,8 @@ jobs:
 
       - name: Deploy to GitHub Pages
         uses: fox3000foxy/deploy-from-private-to-github-pages@v1
+        with:
+          token: ${{ secrets.PAGES_DEPLOY_TOKEN }}
         # the action assumes a `dist` directory is present
         # it will auto-detect the target pages repo and use a deploy branch by default
 ```

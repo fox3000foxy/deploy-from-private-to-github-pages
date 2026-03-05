@@ -19,6 +19,10 @@ inputs:
     description: 'ID of build artifact to fetch from previous job'
     required: false
     default: ''
+  token:
+    description: 'Token used to clone/push the target repository (PAT or GitHub App token recommended for cross-repo deployment)'
+    required: false
+    default: ''
 
 runs:
   using: 'node16'
