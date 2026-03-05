@@ -1,5 +1,5 @@
 // src/index.js
-import * as artifact from '@actions/artifact';
+import artifact from '@actions/artifact';
 import * as core from '@actions/core';
 import { exec } from '@actions/exec';
 import * as github from '@actions/github';
