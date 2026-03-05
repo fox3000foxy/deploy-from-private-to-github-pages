@@ -71,6 +71,9 @@ async function run() {
         // copy files from workspace
         await (0, exec_1.exec)('cp', ['-R', 'dist/.', 'deploy/']);
         await (0, exec_1.exec)('git', ['-C', 'deploy', 'add', '-A']);
+        // identité de commit pour GitHub Actions bot
+        await (0, exec_1.exec)('git', ['-C', 'deploy', 'config', 'user.name', 'github-actions[bot]']);
+        await (0, exec_1.exec)('git', ['-C', 'deploy', 'config', 'user.email', '41898282+github-actions[bot]@users.noreply.github.com']);
         await (0, exec_1.exec)('git', ['-C', 'deploy', 'commit', '-m', `Deploy from ${repo}@${github.context.sha}`], { ignoreReturnCode: true });
         await (0, exec_1.exec)('git', ['-C', 'deploy', 'push', 'origin', branch, '--force']);
     }

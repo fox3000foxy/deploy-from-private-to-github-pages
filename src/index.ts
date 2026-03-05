@@ -43,6 +43,11 @@ async function run() {
     await exec('cp', ['-R', 'dist/.', 'deploy/']);
 
     await exec('git', ['-C', 'deploy', 'add', '-A']);
+
+    // identité de commit pour GitHub Actions bot
+    await exec('git', ['-C', 'deploy', 'config', 'user.name', 'github-actions[bot]']);
+    await exec('git', ['-C', 'deploy', 'config', 'user.email', '41898282+github-actions[bot]@users.noreply.github.com']);
+
     await exec('git', ['-C', 'deploy', 'commit', '-m', `Deploy from ${repo}@${github.context.sha}`], { ignoreReturnCode: true });
     await exec('git', ['-C', 'deploy', 'push', 'origin', branch, '--force']);
   } catch (error: any) {
