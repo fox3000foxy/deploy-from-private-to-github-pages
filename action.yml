@@ -1,0 +1,13 @@
+name: Deploy from private to GitHub Pages
+description: |
+  Copies a build directory to the Pages repo/branch for the current
+  repository.  If no target repo is provided, the action infers the
+  pages repo from the current repo (owner/…\.github\.io) and uses a
+  `deploy` branch by default.
+author: Fox3000Foxy <fox3000foxy@gmail.com>
+
+inputs: {}          # no inputs
+
+runs:
+  using: 'node16'   # or 'docker' / 'composite' depending on your preference
+  main: 'src/index.js'  # compiled JS or script path
