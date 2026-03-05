@@ -1,10 +1,9 @@
 name: Deploy from private to GitHub Pages
-description: |
-  Copies a build directory to the Pages repo/branch for the current
-  repository.  If no target repo is provided, the action infers the
-  pages repo from the current repo (owner/…\.github\.io) and uses a
-  `deploy` branch by default.
+description: Deploys a build artifact or dist folder to a GitHub Pages repository branch.
 author: Fox3000Foxy <fox3000foxy@gmail.com>
+branding:
+  icon: 'activity'
+  color: 'green'
 
 inputs:
   repo:
