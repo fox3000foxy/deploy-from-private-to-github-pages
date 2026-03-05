@@ -10,11 +10,11 @@ GitHub Action that deploys a build directory to a GitHub Pages repository.
 - `branch` *(optional)* – branch to push on the target repo.
   Defaults to `deploy`.
 
-- `artifact` *(optional)* – name of an artifact produced by an earlier job.
-  The action will download the artifact into a folder with the same name
-  (e.g. `dist`), so that the directory structure expected by the deploy step
-  is preserved.
-  Useful when build and deploy run in separate jobs.
+- `artifact` *(optional)* – **ID** of an artifact produced by an earlier job.
+  GitHub assigns a numeric ID when artifacts are uploaded; you can pass that
+  number here. The action will download the artifact into a folder matching
+  its name (e.g. `dist`), so the deploy step works consistently. Useful when
+  build and deploy run in separate jobs.
 
 ## Example usage
 
