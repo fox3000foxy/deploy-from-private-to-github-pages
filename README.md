@@ -34,8 +34,6 @@ GitHub Action that deploys a build directory to a GitHub Pages repository.
     token: ${{ secrets.DEPLOY_TOKEN }} # define secrets.DEPLOY_TOKEN and put it a PAT in it
 ```
 
-No build step is included; the action assumes a `dist/` directory already exists in the workspace (e.g. produced by your earlier steps).
-
 ## Workflow example
 
 Here is a complete workflow that builds a project with pnpm and then deploys the resulting `dist` directory using this action:
