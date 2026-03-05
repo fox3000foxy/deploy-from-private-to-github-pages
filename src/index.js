@@ -2,6 +2,7 @@
 import * as core from '@actions/core';
 import { exec } from '@actions/exec';
 import * as github from '@actions/github';
+import * as artifact from '@actions/artifact';
 
 async function run() {
   try {
@@ -19,6 +20,15 @@ async function run() {
 
     // branch, default provided by action metadata
     const branch = core.getInput('branch') || 'deploy';
+
+    // optionally download an artifact generated earlier in the workflow
+    const artifactName = core.getInput('artifact');
+    if (artifactName) {
+      core.info(`downloading artifact '${artifactName}'`);
+      const client = artifact.create();
+      const downloadResponse = await client.downloadArtifact(artifactName, './', {createArtifactDirectory: false});
+      core.info(`artifact downloaded to ${downloadResponse.downloadPath || '<unknown>'}`);
+    }
 
     // clone or initialize
     await exec('git', ['clone', `https://x-access-token:${process.env.GITHUB_TOKEN}@github.com/${target}.git`, 'deploy'], {ignoreReturnCode: true});

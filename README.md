@@ -10,6 +10,10 @@ GitHub Action that deploys a build directory to a GitHub Pages repository.
 - `branch` *(optional)* – branch to push on the target repo.
   Defaults to `deploy`.
 
+- `artifact` *(optional)* – name of an artifact produced by an earlier job.
+  If supplied the action will download the artifact to the workspace before
+  copying its contents; useful when build and deploy run in separate jobs.
+
 ## Example usage
 
 ```yaml

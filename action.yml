@@ -15,6 +15,10 @@ inputs:
     description: 'Target branch for deployment on the pages repo'
     required: false
     default: 'deploy'
+  artifact:
+    description: 'Name of build artifact to fetch from previous job'
+    required: false
+    default: ''
 
 runs:
   using: 'node16'
